@@ -36,6 +36,25 @@ export function App(): ReactElement {
     <main className="console-shell">
       <RunOverview run={factoryRun} />
 
+      <section className="ops-strip" aria-label="Run readiness summary">
+        <div>
+          <span>Next gate</span>
+          <strong>web-smoke</strong>
+        </div>
+        <div>
+          <span>Current task</span>
+          <strong>{selectedTask.id}</strong>
+        </div>
+        <div>
+          <span>Evidence</span>
+          <strong>{factoryRun.artifacts.length} artifacts</strong>
+        </div>
+        <div>
+          <span>Open actions</span>
+          <strong>{factoryRun.interventions.length} interventions</strong>
+        </div>
+      </section>
+
       <section className="content-grid" aria-label="Operations dashboard">
         <TaskBoard
           onFilterChange={handleFilterChange}
