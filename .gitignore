@@ -1,6 +1,9 @@
 node_modules/
 dist/
-artifacts/
+artifacts/*
+!artifacts/web-smoke/
+artifacts/web-smoke/*
+!artifacts/web-smoke/README.md
 coverage/
 test-results/
 *.log

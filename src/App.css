@@ -1,6 +1,7 @@
 :root {
   color: #18211d;
-  background: #f6f8f3;
+  background:
+    linear-gradient(180deg, #edf4ef 0, #f7f8f1 260px, #f3f6f5 100%);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
@@ -38,7 +39,7 @@ a:focus-visible {
 .console-shell {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 24px 0 40px;
+  padding: 18px 0 32px;
 }
 
 .run-rail,
@@ -52,9 +53,9 @@ a:focus-visible {
 .run-rail {
   display: grid;
   grid-template-columns: minmax(220px, 0.8fr) minmax(360px, 1.05fr);
-  gap: 24px;
+  gap: 18px 24px;
   align-items: start;
-  padding: 24px;
+  padding: 20px;
   border-radius: 8px;
 }
 
@@ -68,8 +69,9 @@ a:focus-visible {
 .status-chip,
 .panel-kicker {
   color: #4f6358;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -86,7 +88,7 @@ p {
 
 h1 {
   margin-bottom: 8px;
-  font-size: 2.2rem;
+  font-size: 2.05rem;
   line-height: 1.05;
 }
 
@@ -113,7 +115,7 @@ h3 {
 .intervention {
   border-radius: 7px;
   background: #eef3ed;
-  padding: 12px;
+  padding: 10px;
 }
 
 dt {
@@ -165,7 +167,7 @@ dd {
 .stage-list {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -174,11 +176,11 @@ dd {
 .stage-item {
   display: grid;
   gap: 3px;
-  min-height: 54px;
+  min-height: 50px;
   border: 1px solid #d4ded6;
   border-radius: 7px;
   background: #f7faf7;
-  padding: 9px;
+  padding: 8px;
 }
 
 .stage-item span,
@@ -218,14 +220,14 @@ dd {
 .content-grid {
   display: grid;
   grid-template-columns: minmax(420px, 1.2fr) minmax(320px, 0.8fr);
-  gap: 16px;
+  gap: 14px;
   align-items: start;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 
 .panel {
   border-radius: 8px;
-  padding: 16px;
+  padding: 14px;
 }
 
 .panel-header {
@@ -233,7 +235,7 @@ dd {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .badge,
@@ -268,13 +270,13 @@ dd {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px 14px;
   width: 100%;
-  min-height: 128px;
+  min-height: 114px;
   border: 1px solid #d4ded6;
   border-left: 5px solid #6b778d;
   border-radius: 8px;
   background: #f8faf7;
   color: inherit;
-  padding: 14px;
+  padding: 12px;
   text-align: left;
 }
 
@@ -299,7 +301,7 @@ dd {
 }
 
 .filter-button {
-  min-height: 36px;
+  min-height: 34px;
   border: 1px solid #bfccc4;
   border-radius: 999px;
   background: #f7faf7;
@@ -418,8 +420,8 @@ dd {
 
 @media (max-width: 780px) {
   .console-shell {
-    width: min(100% - 20px, 520px);
-    padding-top: 12px;
+    width: min(100% - 16px, 520px);
+    padding-top: 8px;
   }
 
   .run-rail,
@@ -429,20 +431,28 @@ dd {
   }
 
   .run-rail {
-    gap: 14px;
-    padding: 18px;
+    gap: 10px;
+    padding: 12px;
   }
 
   .run-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .run-stats div {
+    min-height: 58px;
+    padding: 8px;
   }
 
   .stage-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(86px, 1fr));
+    overflow-x: auto;
+    padding-bottom: 2px;
   }
 
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.62rem;
   }
 
   .score-grid {
@@ -455,7 +465,9 @@ dd {
 
   .task-card {
     grid-template-columns: 1fr;
-    min-height: 132px;
+    min-height: 0;
+    gap: 6px;
+    padding: 10px;
   }
 
   .artifact-list li,
@@ -464,8 +476,50 @@ dd {
     grid-template-columns: 1fr;
   }
 
+  .content-grid {
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .task-detail {
+    order: 4;
+  }
+
+  .score-grid article {
+    min-height: 68px;
+    padding: 12px;
+  }
+
+  .metric {
+    font-size: 1.55rem;
+  }
+
   .gate-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 430px) {
+  .run-id,
+  .status-chip,
+  .badge {
+    white-space: normal;
+  }
+
+  .run-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .run-stats div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .panel-header {
+    align-items: flex-start;
   }
 }
