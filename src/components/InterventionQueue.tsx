@@ -25,23 +25,29 @@ export function InterventionQueue({
         </div>
         <span className="badge">{interventions.length} open</span>
       </div>
-      {interventions.map((intervention: InterventionRecord) => (
-        <button
-          aria-pressed={intervention.id === selectedInterventionId}
-          className={`intervention severity-${intervention.severity}`}
-          key={intervention.id}
-          onClick={() => onSelectIntervention(intervention.id)}
-          type="button"
-        >
-          <strong>
-            {intervention.id}: {intervention.summary}
-          </strong>
-          <span className="status-chip">Severity: {intervention.severity}</span>
-        </button>
-      ))}
+      {interventions.map((intervention: InterventionRecord) => {
+        const isSelected: boolean = intervention.id === selectedInterventionId;
+
+        return (
+          <button
+            aria-controls="intervention-recommendation"
+            aria-expanded={isSelected}
+            aria-pressed={isSelected}
+            className={`intervention severity-${intervention.severity}`}
+            key={intervention.id}
+            onClick={() => onSelectIntervention(intervention.id)}
+            type="button"
+          >
+            <strong>
+              {intervention.id}: {intervention.summary}
+            </strong>
+            <span className="status-chip">Severity: {intervention.severity}</span>
+          </button>
+        );
+      })}
 
       {selectedIntervention ? (
-        <article className="intervention-detail" aria-label="Intervention recommendation">
+        <article className="intervention-detail" id="intervention-recommendation" aria-label="Intervention recommendation">
           <strong>{selectedIntervention.summary}</strong>
           <p>{selectedIntervention.nextAction}</p>
         </article>
