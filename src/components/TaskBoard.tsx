@@ -44,6 +44,9 @@ export function TaskBoard({ run, selectedTaskId, taskFilter, onFilterChange, onS
             key={task.id}
             onClick={() => onSelectTask(task.id)}
             type="button"
+            aria-label={`${task.id} ${task.title}. State: ${task.state}. Dependencies: ${
+              task.dependencies.length === 0 ? "none" : task.dependencies.join(", ")
+            }. Owner: ${task.owner}. Gates: ${task.gates.join(", ")}`}
           >
             <div>
               <strong>{task.id}</strong>

@@ -34,14 +34,16 @@ export function RunOverview({ run }: RunOverviewProps): ReactElement {
         </div>
         <div>
           <dt>Public route</dt>
-          <dd>Pending verification</dd>
+          <dd>
+            <a href={run.publicUrl}>Pending verification</a>
+          </dd>
         </div>
       </dl>
 
       <div className="stage-progress" aria-label="Stage progress">
         <div className="stage-progress-header">
           <strong>Stage progress</strong>
-          <span>{completedStages} of {orderedStages.length} complete</span>
+          <span>{completedStages} of {orderedStages.length} complete; current stage: {run.stage}</span>
         </div>
         <div
           className="progress-meter"
@@ -59,7 +61,7 @@ export function RunOverview({ run }: RunOverviewProps): ReactElement {
             return (
               <li className={`stage-item stage-${status}`} key={stage}>
                 <span>{stage}</span>
-                <strong>{status}</strong>
+                <strong>Status: {status}</strong>
               </li>
             );
           })}
