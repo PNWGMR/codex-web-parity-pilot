@@ -4,13 +4,13 @@ export default defineConfig({
   testDir: "./tests",
   timeout: 30000,
   use: {
-    baseURL: "http://127.0.0.1:4173",
+    baseURL: "http://127.0.0.1:4184",
     screenshot: "only-on-failure"
   },
   webServer: {
-    command: "npm run preview -- --port 4173",
-    url: "http://127.0.0.1:4173",
-    reuseExistingServer: !process.env.CI,
+    command: "npm run build && npm run preview -- --port 4184",
+    url: "http://127.0.0.1:4184",
+    reuseExistingServer: false,
     timeout: 120000
   },
   projects: [
@@ -22,4 +22,3 @@ export default defineConfig({
     }
   ]
 });
-
