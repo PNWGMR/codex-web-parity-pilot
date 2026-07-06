@@ -1,11 +1,19 @@
 import type { ReactElement } from "react";
-import type { FactoryRun } from "../data/factoryRun";
+import { filterTasksByState, type FactoryRun, type TaskRecord, type TaskState } from "../data/factoryRun";
 
 type TaskBoardProps = {
   readonly run: FactoryRun;
+  readonly selectedTaskId: string;
+  readonly taskFilter: TaskState | "all";
+  readonly onFilterChange: (state: TaskState | "all") => void;
+  readonly onSelectTask: (taskId: string) => void;
 };
 
-export function TaskBoard({ run }: TaskBoardProps): ReactElement {
+const taskStates = ["all", "ready", "running", "blocked", "passed"] as const;
+
+export function TaskBoard({ run, selectedTaskId, taskFilter, onFilterChange, onSelectTask }: TaskBoardProps): ReactElement {
+  const visibleTasks: readonly TaskRecord[] = filterTasksByState(run, taskFilter);
+
   return (
     <section className="panel task-board" aria-label="Task dependency board">
       <div className="panel-header">
@@ -13,11 +21,30 @@ export function TaskBoard({ run }: TaskBoardProps): ReactElement {
           <p className="panel-kicker">Task board</p>
           <h2>Dependency sequence</h2>
         </div>
-        <span className="badge">{run.tasks.length} tracked</span>
+        <span className="badge">{visibleTasks.length} shown</span>
+      </div>
+      <div className="filter-bar" aria-label="Task state filters">
+        {taskStates.map((state) => (
+          <button
+            aria-pressed={taskFilter === state}
+            className="filter-button"
+            key={state}
+            onClick={() => onFilterChange(state)}
+            type="button"
+          >
+            {state}
+          </button>
+        ))}
       </div>
       <div className="task-list">
-        {run.tasks.map((task) => (
-          <article className={`task-card state-${task.state}`} key={task.id} aria-label={`${task.id} ${task.state}`}>
+        {visibleTasks.map((task: TaskRecord) => (
+          <button
+            aria-pressed={selectedTaskId === task.id}
+            className={`task-card state-${task.state}`}
+            key={task.id}
+            onClick={() => onSelectTask(task.id)}
+            type="button"
+          >
             <div>
               <strong>{task.id}</strong>
               <h3>{task.title}</h3>
@@ -26,7 +53,7 @@ export function TaskBoard({ run }: TaskBoardProps): ReactElement {
             <p>{task.dependencies.length === 0 ? "Dependencies: none" : `Dependencies: ${task.dependencies.join(", ")}`}</p>
             <p>Owner: {task.owner}</p>
             <p>Gates: {task.gates.join(", ")}</p>
-          </article>
+          </button>
         ))}
       </div>
     </section>

@@ -141,6 +141,14 @@ export function countTasksByState(run: FactoryRun, state: TaskState): number {
   return run.tasks.filter((task: TaskRecord): boolean => task.state === state).length;
 }
 
+export function filterTasksByState(run: FactoryRun, state: TaskState | "all"): readonly TaskRecord[] {
+  return state === "all" ? run.tasks : run.tasks.filter((task: TaskRecord): boolean => task.state === state);
+}
+
+export function findTaskById(run: FactoryRun, taskId: string): TaskRecord | undefined {
+  return run.tasks.find((task: TaskRecord): boolean => task.id === taskId);
+}
+
 export function calculateGatePassRate(run: FactoryRun): number {
   const totals = run.gates.reduce(
     (accumulator: { passed: number; total: number }, gate: GateRecord) => ({
@@ -151,4 +159,3 @@ export function calculateGatePassRate(run: FactoryRun): number {
   );
   return Math.round((totals.passed / totals.total) * 100);
 }
-

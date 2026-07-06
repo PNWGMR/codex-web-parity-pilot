@@ -1,55 +1,58 @@
-import type { ReactElement } from "react";
+import { useState, type ReactElement } from "react";
+import { ArtifactPanel } from "./components/ArtifactPanel";
+import { InterventionQueue } from "./components/InterventionQueue";
 import { QualityPanel } from "./components/QualityPanel";
 import { RunOverview } from "./components/RunOverview";
 import { TaskBoard } from "./components/TaskBoard";
-import { factoryRun } from "./data/factoryRun";
+import { TaskDetail } from "./components/TaskDetail";
+import { factoryRun, findTaskById, type TaskRecord, type TaskState } from "./data/factoryRun";
 
 export function App(): ReactElement {
+  const [taskFilter, setTaskFilter] = useState<TaskState | "all">("all");
+  const [selectedTaskId, setSelectedTaskId] = useState<string>("WEB-103");
+  const [expandedArtifacts, setExpandedArtifacts] = useState<readonly string[]>([]);
+  const [selectedInterventionId, setSelectedInterventionId] = useState<string>("INT-2");
+  const selectedTask: TaskRecord = findTaskById(factoryRun, selectedTaskId) ?? factoryRun.tasks[0];
+
+  function handleFilterChange(state: TaskState | "all"): void {
+    setTaskFilter(state);
+    const firstMatchingTask: TaskRecord | undefined = state === "all"
+      ? factoryRun.tasks[0]
+      : factoryRun.tasks.find((task: TaskRecord): boolean => task.state === state);
+
+    if (firstMatchingTask !== undefined) {
+      setSelectedTaskId(firstMatchingTask.id);
+    }
+  }
+
+  function handleToggleArtifact(artifactName: string): void {
+    setExpandedArtifacts((currentArtifacts: readonly string[]): readonly string[] =>
+      currentArtifacts.includes(artifactName)
+        ? currentArtifacts.filter((currentArtifact: string): boolean => currentArtifact !== artifactName)
+        : [...currentArtifacts, artifactName]
+    );
+  }
+
   return (
     <main className="console-shell">
       <RunOverview run={factoryRun} />
 
       <section className="content-grid" aria-label="Operations dashboard">
-        <TaskBoard run={factoryRun} />
+        <TaskBoard
+          onFilterChange={handleFilterChange}
+          onSelectTask={setSelectedTaskId}
+          run={factoryRun}
+          selectedTaskId={selectedTask.id}
+          taskFilter={taskFilter}
+        />
+        <TaskDetail run={factoryRun} task={selectedTask} />
         <QualityPanel run={factoryRun} />
-
-        <section className="panel" aria-label="Artifact status">
-          <div className="panel-header">
-            <div>
-              <p className="panel-kicker">Artifact status</p>
-              <h2>Review evidence</h2>
-            </div>
-            <span className="badge">{factoryRun.artifacts.length} tracked</span>
-          </div>
-          <ul className="artifact-list">
-            {factoryRun.artifacts.map((artifact) => (
-              <li key={artifact.name}>
-                <strong>{artifact.name}</strong>
-                <span className="status-chip">Status: {artifact.status}</span>
-                <p>{artifact.detail}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="panel intervention-panel" aria-label="Intervention queue">
-          <div className="panel-header">
-            <div>
-              <p className="panel-kicker">Intervention queue</p>
-              <h2>Operator actions</h2>
-            </div>
-            <span className="badge">{factoryRun.interventions.length} open</span>
-          </div>
-          {factoryRun.interventions.map((intervention) => (
-            <article className={`intervention severity-${intervention.severity}`} key={intervention.id}>
-              <strong>
-                {intervention.id}: {intervention.summary}
-              </strong>
-              <span className="status-chip">Severity: {intervention.severity}</span>
-              <p>{intervention.nextAction}</p>
-            </article>
-          ))}
-        </section>
+        <ArtifactPanel artifacts={factoryRun.artifacts} expandedArtifacts={expandedArtifacts} onToggleArtifact={handleToggleArtifact} />
+        <InterventionQueue
+          interventions={factoryRun.interventions}
+          onSelectIntervention={setSelectedInterventionId}
+          selectedInterventionId={selectedInterventionId}
+        />
       </section>
     </main>
   );
