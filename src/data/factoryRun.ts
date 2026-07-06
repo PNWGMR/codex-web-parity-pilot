@@ -145,8 +145,23 @@ export function filterTasksByState(run: FactoryRun, state: TaskState | "all"): r
   return state === "all" ? run.tasks : run.tasks.filter((task: TaskRecord): boolean => task.state === state);
 }
 
+export function selectTaskIdForFilter(run: FactoryRun, state: TaskState | "all", fallbackTaskId: string): string {
+  const firstMatchingTask: TaskRecord | undefined = filterTasksByState(run, state)[0];
+  return firstMatchingTask?.id ?? fallbackTaskId;
+}
+
 export function findTaskById(run: FactoryRun, taskId: string): TaskRecord | undefined {
   return run.tasks.find((task: TaskRecord): boolean => task.id === taskId);
+}
+
+export function toggleExpandedArtifact(currentArtifacts: readonly string[], artifactName: string): readonly string[] {
+  return currentArtifacts.includes(artifactName)
+    ? currentArtifacts.filter((currentArtifact: string): boolean => currentArtifact !== artifactName)
+    : [...currentArtifacts, artifactName];
+}
+
+export function findInterventionById(run: FactoryRun, interventionId: string): InterventionRecord | undefined {
+  return run.interventions.find((intervention: InterventionRecord): boolean => intervention.id === interventionId);
 }
 
 export function calculateGatePassRate(run: FactoryRun): number {

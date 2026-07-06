@@ -5,31 +5,30 @@ import { QualityPanel } from "./components/QualityPanel";
 import { RunOverview } from "./components/RunOverview";
 import { TaskBoard } from "./components/TaskBoard";
 import { TaskDetail } from "./components/TaskDetail";
-import { factoryRun, findTaskById, type TaskRecord, type TaskState } from "./data/factoryRun";
+import {
+  factoryRun,
+  findTaskById,
+  selectTaskIdForFilter,
+  toggleExpandedArtifact,
+  type TaskRecord,
+  type TaskState
+} from "./data/factoryRun";
 
 export function App(): ReactElement {
   const [taskFilter, setTaskFilter] = useState<TaskState | "all">("all");
   const [selectedTaskId, setSelectedTaskId] = useState<string>("WEB-103");
   const [expandedArtifacts, setExpandedArtifacts] = useState<readonly string[]>([]);
-  const [selectedInterventionId, setSelectedInterventionId] = useState<string>("INT-2");
+  const [selectedInterventionId, setSelectedInterventionId] = useState<string>("");
   const selectedTask: TaskRecord = findTaskById(factoryRun, selectedTaskId) ?? factoryRun.tasks[0];
 
   function handleFilterChange(state: TaskState | "all"): void {
     setTaskFilter(state);
-    const firstMatchingTask: TaskRecord | undefined = state === "all"
-      ? factoryRun.tasks[0]
-      : factoryRun.tasks.find((task: TaskRecord): boolean => task.state === state);
-
-    if (firstMatchingTask !== undefined) {
-      setSelectedTaskId(firstMatchingTask.id);
-    }
+    setSelectedTaskId(selectTaskIdForFilter(factoryRun, state, selectedTaskId));
   }
 
   function handleToggleArtifact(artifactName: string): void {
     setExpandedArtifacts((currentArtifacts: readonly string[]): readonly string[] =>
-      currentArtifacts.includes(artifactName)
-        ? currentArtifacts.filter((currentArtifact: string): boolean => currentArtifact !== artifactName)
-        : [...currentArtifacts, artifactName]
+      toggleExpandedArtifact(currentArtifacts, artifactName)
     );
   }
 
