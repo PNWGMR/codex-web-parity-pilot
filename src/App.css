@@ -24,6 +24,17 @@ textarea {
   font: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #143f73;
+  outline-offset: 3px;
+}
+
 .console-shell {
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
@@ -256,17 +267,45 @@ dd {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px 14px;
+  width: 100%;
   min-height: 128px;
+  border: 1px solid #d4ded6;
   border-left: 5px solid #6b778d;
   border-radius: 8px;
   background: #f8faf7;
+  color: inherit;
   padding: 14px;
+  text-align: left;
 }
 
 .task-card p {
   margin-bottom: 0;
   color: #536158;
   font-size: 0.9rem;
+}
+
+.task-card[aria-pressed="true"],
+.filter-button[aria-pressed="true"],
+.intervention[aria-pressed="true"] {
+  background: #e3efe8;
+  box-shadow: inset 0 0 0 2px #2d6d5c;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-button {
+  min-height: 36px;
+  border: 1px solid #bfccc4;
+  border-radius: 999px;
+  background: #f7faf7;
+  color: #2f4138;
+  padding: 6px 12px;
+  text-transform: capitalize;
 }
 
 .state-passed {
@@ -305,6 +344,15 @@ dd {
   gap: 4px 12px;
 }
 
+.artifact-toggle {
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+}
+
 .artifact-list p {
   grid-column: 1 / -1;
   margin-bottom: 0;
@@ -315,18 +363,57 @@ dd {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px 12px;
+  width: 100%;
+  border: 1px solid #d4ded6;
   border-left: 5px solid #6b778d;
   margin-bottom: 10px;
+  color: inherit;
+  text-align: left;
 }
 
-.intervention p {
+.intervention-detail {
+  border: 1px solid #cbd9cf;
+  border-radius: 7px;
+  background: #f7faf7;
+  padding: 12px;
+}
+
+.intervention-detail p {
   grid-column: 1 / -1;
-  margin: 0;
+  margin: 8px 0 0;
   color: #536158;
 }
 
 .severity-low {
   border-left-color: #2f6ea5;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.detail-grid div {
+  border-radius: 7px;
+  background: #eef3ed;
+  padding: 12px;
+}
+
+.detail-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-stack p,
+.detail-stack ul {
+  margin: 8px 0 0;
+  color: #536158;
+}
+
+.detail-stack ul {
+  padding-left: 20px;
 }
 
 @media (max-width: 780px) {
@@ -372,7 +459,8 @@ dd {
   }
 
   .artifact-list li,
-  .intervention {
+  .intervention,
+  .detail-grid {
     grid-template-columns: 1fr;
   }
 
