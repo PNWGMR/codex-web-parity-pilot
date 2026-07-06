@@ -40,17 +40,22 @@ textarea {
 
 .run-rail {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.4fr);
+  grid-template-columns: minmax(220px, 0.8fr) minmax(360px, 1.05fr);
   gap: 24px;
-  align-items: end;
+  align-items: start;
   padding: 24px;
   border-radius: 8px;
+}
+
+.run-title-block {
+  min-width: 0;
 }
 
 .eyebrow,
 .run-id,
 .badge,
-.status-chip {
+.status-chip,
+.panel-kicker {
   color: #4f6358;
   font-size: 0.82rem;
   font-weight: 700;
@@ -62,6 +67,10 @@ h2,
 h3,
 p {
   margin-top: 0;
+}
+
+.panel-kicker {
+  margin-bottom: 4px;
 }
 
 h1 {
@@ -107,18 +116,83 @@ dd {
   font-weight: 700;
 }
 
+.stage-progress {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 10px;
+}
+
+.stage-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #314139;
+}
+
+.stage-progress-header span {
+  color: #5a6860;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.progress-meter {
+  height: 12px;
+  overflow: hidden;
+  border: 1px solid #c4d0c7;
+  border-radius: 999px;
+  background: #edf2ef;
+}
+
+.progress-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #2d6d5c;
+}
+
+.stage-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage-item {
+  display: grid;
+  gap: 3px;
+  min-height: 54px;
+  border: 1px solid #d4ded6;
+  border-radius: 7px;
+  background: #f7faf7;
+  padding: 9px;
+}
+
+.stage-item span,
+.stage-item strong {
+  overflow-wrap: anywhere;
+}
+
+.stage-item strong {
+  color: #4f6358;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
 .score-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 16px 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .score-grid article {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-height: 104px;
+  min-height: 92px;
   justify-content: center;
   padding: 16px;
   border-radius: 8px;
@@ -132,9 +206,10 @@ dd {
 
 .content-grid {
   display: grid;
-  grid-template-columns: minmax(420px, 1.35fr) minmax(300px, 0.95fr);
+  grid-template-columns: minmax(420px, 1.2fr) minmax(320px, 0.8fr);
   gap: 16px;
   align-items: start;
+  margin-top: 16px;
 }
 
 .panel {
@@ -181,7 +256,7 @@ dd {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px 14px;
-  min-height: 112px;
+  min-height: 128px;
   border-left: 5px solid #6b778d;
   border-radius: 8px;
   background: #f8faf7;
@@ -218,6 +293,12 @@ dd {
   gap: 14px;
 }
 
+.gate-row strong,
+.status-chip,
+.badge {
+  white-space: nowrap;
+}
+
 .artifact-list li {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -231,12 +312,16 @@ dd {
 }
 
 .intervention {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
   border-left: 5px solid #6b778d;
   margin-bottom: 10px;
 }
 
 .intervention p {
-  margin: 8px 0 0;
+  grid-column: 1 / -1;
+  margin: 0;
   color: #536158;
 }
 
@@ -265,6 +350,10 @@ dd {
     grid-template-columns: 1fr;
   }
 
+  .stage-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   h1 {
     font-size: 1.75rem;
   }
@@ -281,5 +370,14 @@ dd {
     grid-template-columns: 1fr;
     min-height: 132px;
   }
-}
 
+  .artifact-list li,
+  .intervention {
+    grid-template-columns: 1fr;
+  }
+
+  .gate-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
