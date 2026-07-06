@@ -46,7 +46,12 @@ export function QualityPanel({ run }: QualityPanelProps): ReactElement {
 
       <div className="gate-list" aria-label="Gate evidence">
         {run.gates.map((gate) => (
-          <div className={`gate-row gate-${gate.status}`} key={gate.name}>
+          <div
+            aria-label={`${gate.name}: ${formatGateStatus(gate)}`}
+            className={`gate-row gate-${gate.status}`}
+            key={gate.name}
+            role="group"
+          >
             <span>{gate.name}</span>
             <strong>{formatGateStatus(gate)}</strong>
           </div>
